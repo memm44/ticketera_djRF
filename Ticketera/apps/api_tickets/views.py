@@ -1,4 +1,4 @@
-from .models import Issue, Responsible
+from .models import Issue, Responsible, Issuer
 from .serializers import IssueSerializer, ResponsibleSerializer, UserSerializer
 from rest_framework.views import APIView, Response
 from django.contrib.auth import authenticate
@@ -9,23 +9,28 @@ from .permissions import IsOwner
 from rest_framework.permissions import IsAuthenticated
 
 
-class ListIssues(generics.ListCreateAPIView):
-    queryset = Issue.objects.all()
-    serializer_class = IssueSerializer
-    # def get(self, request):
-    #     # obtenemos todos los registros de la BD
-    #     issue = Issue.objects.all()
-    #     # serializamos la data que recuperamos de la BD
-    #     issue_json = IssueSerializer(issue, many=True)
-    #     return Response(issue_json.data)
-    #
-    # def post(self, request):
-    #     # serializamos la data y posteriormente verifiamos que esta sea valida.
-    #     issue_json = IssueSerializer(data=request.data)
-    #     if issue_json.is_valid():
-    #         issue_json.save()
-    #         return Response(issue_json.data, status=200)
-    #     return Response(issue_json.errors, status=400)
+class ListIssues(APIView):
+    # queryset = Issue.objects.all()
+    # serializer_class = IssueSerializer
+    def get(self, request):
+        # obtenemos todos los registros de la BD
+        issue = Issue.objects.all()
+        # serializamos la data que recuperamos de la BD
+        issue_json = IssueSerializer(issue, many=True)
+        return Response(issue_json.data)
+
+    def post(self, request):
+        # serializamos la data y posteriormente verifiamos que esta sea valida.
+        issue_json = IssueSerializer(data=request.data)
+        # si no encontramos el id del issuer que vino en la peticion creamos uno y lo asociamos al issue
+        buscado = request.data.get('id_issuer')
+        issuer, creado = Issuer.objects.get_or_create(id=buscado)
+        # en esta parte asociamos el issue al objeto nuevo creado u obtenido
+        request.data['id_issuer'] = issuer.id
+        if issue_json.is_valid():
+            issue_json.save()
+            return Response(issue_json.data, status=200)
+        return Response(issue_json.errors, status=400)
 
 
 class DetailIssue(APIView):
@@ -80,11 +85,11 @@ class AsignIssue(APIView):
         if "id_responsible" in request.data:
             # si se envia el campo lo buscamos en la base de datos con el valor de la petición
             id_recibido = request.data.get('id_responsible')
-            resp = Responsible.objects.filter(id=id_recibido)
+            resp = Responsible.objects.filter(id=id_recibido).first()
             # si la logitud es mayor a cero es porque consiguio el usuario y lo remplazaremos
             # de lo contrario guardamos el actual.
-            if len(resp) > 0:
-                request.data['id_responsible'] = resp[0]
+            if resp:
+                request.data['id_responsible'] = resp
             else:
                 request.data['id_responsible'] = actual_responsable
         # armado la data serializada verificamos si esta es valida y la guardamos en la base de datos

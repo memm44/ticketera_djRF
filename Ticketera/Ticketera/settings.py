@@ -31,7 +31,6 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django.contrib.admin',
     'rest_framework.authtoken',
-    'Ticketera',
     'apps.api_tickets',
     'rest_framework',
     'django.contrib.auth',
@@ -123,6 +122,22 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'memm44@gmail.com'  # Your email id
+EMAIL_HOST_PASSWORD = 'memmgmail2.5211'  # your password
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+# antes de cualquier peticion a un endpoint debemos si o si estar autenticados
+# debemos primero solicitar un token como por ejemplo :
+# curl -X POST http://127.0.0.1:8000/v2/users/login/ --header "Content-Type:application/json"
+# --data '{"username":"miguel","password":"miguelito"}'
+# eso nos devolvera un token y luego lo tenemos que pasar como header, ejemplo:
+# curl -X POST http://127.0.0.1:8000/issues --header "Content-Type:application/json"
+# --data '{"id_issuer":"curle","issue":"todo mal"}'
+# --header "Authorization:Token e3b7558f38438000955ee861d5a4415ba3225bf7"
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
