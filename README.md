@@ -1,4 +1,4 @@
-# Simulacíon Ticketera
+# Simulación Ticketera
 ## App realizada con Python y Django.
 
 Requerimientos:
