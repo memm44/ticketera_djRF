@@ -6,8 +6,9 @@ Requerimientos:
 - Django rest framework
 
 
-#### EndPoint de ejemplo para crear un Issue:
-**POST** por defecto se crean con fecha y hora actualy el estado en false indicando que no se ha resuelto
+#### EndPoint de ejemplo para crear un Issue:*POST* 
+
+por defecto se crean con fecha y hora actualy el estado en false indicando que no se ha resuelto
 ruta ejemplo: http://localhost:8000/issues
 
 ```
@@ -17,7 +18,7 @@ ruta ejemplo: http://localhost:8000/issues
 }
 ```
 
-#### Endpoint de ejemplo para Asignar o actualizar un ticket : PATCH
+#### Endpoint de ejemplo para Asignar o actualizar un ticket : *PATCH*
 
 Los empleados deben estar creados primero en la base de datos para luego asociarles un id de Issue
 ruta ejemplo: http://localhost:8000/issue/assign
@@ -30,7 +31,7 @@ ruta ejemplo: http://localhost:8000/issue/assign
 	"id_responsible":"luis"
 }
 ```
-#### Endpoint de ejemplo para Consultar y listar o actualizar el status de un Issue especifico a traves de su id. GET
+#### Endpoint de ejemplo para Consultar y listar o actualizar el status de un Issue especifico a traves de su id. *GET*
 
 rutas ejemplo: 
 http://localhost:8000/issue/1/ esta ruta devuelve un registro especifico dependiendo del parametro que pasemos en la url
@@ -48,7 +49,7 @@ ejemplo de la devoluvción:
         "id_responsible": "jorge"
     }
 ```
-#### Endpoint para eliminar un ticket. Delete
+#### Endpoint para eliminar un ticket. *DELETE*
 
 ruta de ejemplo: http://localhost:8000/issue/1/
 
