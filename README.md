@@ -1,3 +1,9 @@
+# Simulacíon Ticketera
+## App realizada con Python y Django.
+
+Requerimientos:
+- Django 2.2
+- Django rest framework
 
 
 #### EndPoint de ejemplo para crear un Issue:
